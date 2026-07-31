@@ -1,3 +1,23 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+*.local
+
+# Coverage
+coverage
+
+# Playwright. The e2e spec (#36) does not exist yet, so these paths are taken
+# from create-playwright's own generator rather than observed in this repo.
+# They stay unverified until #36 produces a report and confirms `git status`
+# is still clean afterwards.
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # Logs
 logs
 *.log
@@ -7,19 +27,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment. Real values never enter the repo; .env.example is the contract
+# and is the one file here that must stay tracked.
+.env*
+!.env.example
 
-# Editor directories and files
+# Editor
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# OS
+.DS_Store
+Thumbs.db
