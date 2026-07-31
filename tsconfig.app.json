@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "types": ["vite/client", "vitest/globals"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Strictness */
+    // Already the default in TypeScript 7. Stated so the intent is on the page
+    // instead of inherited silently; this line switches nothing on.
+    "strict": true,
+    // Off by default. Types every indexed read as `T | undefined`, so indexing a
+    // ramp by step has to prove the step exists.
+    "noUncheckedIndexedAccess": true,
+    // Off by default. Keeps "absent" and "present but undefined" distinct, which
+    // matters because params round-trip through a URL that serializes them
+    // differently.
+    "exactOptionalPropertyTypes": true,
+
+    /* Linting */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+
+  // VS Code bundles TypeScript 6 and reaches TypeScript 7 only through this
+  // flag, so without it the editor reports diagnostics from a different
+  // compiler than the gate runs. Experimental upstream; turning it off changes
+  // only what the editor uses, never what CI checks.
+  "typescript.experimental.useTsgo": true
+}
