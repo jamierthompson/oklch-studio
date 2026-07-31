@@ -1,0 +1,65 @@
+name: gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# On a pull request only the latest push matters, so a superseded run is
+# cancelled. On main every commit is a distinct merge whose result is worth
+# keeping, so the expression resolves false there and runs are left to finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      # ---- Setup. No local equivalent, and not part of the gate. ----------
+
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up pnpm
+        # No version pinned here on purpose: the action reads `packageManager`
+        # from package.json, so the pin keeps a single home.
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+
+      - name: Set up Node
+        # Likewise the version comes from .nvmrc rather than being restated
+        # here, so local and CI cannot resolve different toolchains.
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Report concurrency mode
+        # The concurrency block is evaluated before any step runs and is not
+        # exposed by the API, so the same expression is echoed here. This is how
+        # cancel-in-progress is confirmed true on a pull request and false on
+        # main, without racing two merges into a protected branch.
+        run: echo "event=${{ github.event_name }} cancel-in-progress=${{ github.event_name == 'pull_request' }}"
+
+      # ---- The gate. Five steps, each the local script of the same name. ---
+
+      - name: format:check
+        run: pnpm format:check
+
+      - name: lint
+        run: pnpm lint
+
+      - name: typecheck
+        run: pnpm typecheck
+
+      - name: test
+        run: pnpm test
+
+      - name: build
+        run: pnpm build
