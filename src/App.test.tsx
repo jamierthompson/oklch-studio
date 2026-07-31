@@ -11,6 +11,8 @@ describe("App", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "oklch-studio" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("oklch(0% 0 0)")).toBeInTheDocument();
+    expect(
+      screen.getByText("oklch(54.134% 0.24659 293.01)"),
+    ).toBeInTheDocument();
   });
 });
